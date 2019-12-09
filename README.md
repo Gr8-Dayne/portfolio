@@ -1,6 +1,7 @@
 # Portfolio
 
 12/09/2019
+
 Number and name of feature: Lab 05
 
 Estimate of time needed to complete: 1 hour
@@ -13,6 +14,7 @@ Actual time needed to complete: 1.5 hours
 
 
 12/09/2019
+
 Number and name of feature: ________________________________
 
 Estimate of time needed to complete: _____
