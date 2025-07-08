@@ -1,6 +1,35 @@
 @import url("font-awesome.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,600");
 
+/* Modern CSS Variables */
+:root {
+  --color-bg: #f8f8f8;
+  --color-bg-alt: #ffffff;
+  --color-text: #222;
+  --color-text-alt: #555;
+  --color-primary: #3c8dbc;
+  --color-secondary: #f39c12;
+  --color-link: #3c8dbc;
+  --color-link-hover: #23527c;
+  --color-border: #e0e0e0;
+  --font-main: 'Source Sans Pro', Arial, sans-serif;
+  --font-size-base: 18px;
+  --spacing-base: 1rem;
+  --transition-fast: 0.2s;
+}
+
+[data-theme="dark"] {
+  --color-bg: #181a1b;
+  --color-bg-alt: #23272a;
+  --color-text: #e3e3e3;
+  --color-text-alt: #b0b0b0;
+  --color-primary: #4fa3ff;
+  --color-secondary: #ffc107;
+  --color-link: #4fa3ff;
+  --color-link-hover: #90caf9;
+  --color-border: #333;
+}
+
 /*
 	Prologue by HTML5 UP
 	html5up.net | @ajlkn
@@ -52,7 +81,27 @@ table {
 }
 
 body {
-	-webkit-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: var(--font-size-base);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+  font-family: var(--font-main);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+a:hover, a:focus {
+  color: var(--color-link-hover);
 }
 
 mark {
@@ -66,10 +115,10 @@ input::-moz-focus-inner {
 }
 
 input, select, textarea {
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	-ms-appearance: none;
-	appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
 }
 
 /* Basic */
@@ -1848,6 +1897,8 @@ input, select, textarea {
 	form textarea {
 		position: relative;
 		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
 		display: block;
 		border: 0;
 		outline: 0;

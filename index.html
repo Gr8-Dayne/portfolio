@@ -10,12 +10,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/jquery.scrolly@0.0.1/jquery.scrolly.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.scrollex/0.2.1/jquery.scrollex.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-browser/0.1.0/jquery.browser.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/core.js"></script>
+        <!-- Modern vanilla JS will be loaded here -->
+        <script src="assets/js/main.js" defer></script>
 	</head>
 	<body class="is-preload">
 
@@ -26,10 +22,13 @@
 
 					<!-- Logo -->
 						<div id="logo">
-							<span class="image avatar48"><img src="images/daylong copy.jpeg" alt="Dayne" /></span>
-							<h1 id="title">Dayne Daylong</h1>
-							<p>SDE - Amazon Music</p>
-						</div>
+    <span class="image avatar48"><img src="images/daylong copy.jpeg" alt="Dayne" loading="lazy" /></span>
+    <h1 id="title">Dayne Daylong</h1>
+    <p>SDE - Amazon Music</p>
+    <button id="dark-mode-toggle" aria-label="Toggle dark mode" style="margin-top:10px;cursor:pointer;font-size:1.5em;background:none;border:none;outline:2px solid transparent;">
+      <span id="dark-mode-icon" aria-hidden="true">🌙</span>
+    </button>
+</div>
 
 					<!-- Nav -->
 						<nav id="nav">
@@ -60,7 +59,7 @@
 			<div id="main">
 
 				<!-- Intro -->
-					<section id="top" class="one dark cover">
+					<section id="top" class="one dark cover reveal-on-scroll">
 						<div class="container">
 
 							<header>
@@ -75,7 +74,7 @@
 					</section>
 
 				<!-- Portfolio -->
-					<section id="portfolio" class="two">
+					<section id="portfolio" class="two reveal-on-scroll">
 						<div class="container">
 
 							<header>
@@ -133,7 +132,7 @@
 					</section>
 
 				<!-- About Me -->
-					<section id="about" class="three">
+					<section id="about" class="three reveal-on-scroll">
 						<div class="container">
 
 							<header>
@@ -148,7 +147,7 @@
 					</section>
 
 				<!-- Contact -->
-					<section id="contact" class="four">
+					<section id="contact" class="four reveal-on-scroll">
 						<div class="container">
 
 							<header>

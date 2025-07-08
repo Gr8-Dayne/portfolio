@@ -1,123 +1,123 @@
-/*
-	Prologue by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+// Modernized main.js - Vanilla JS only
+// Handles navigation, smooth scrolling, and preload removal
+// Prepares for dark mode and scroll animations
 
-(function($) {
+// Remove is-preload class after page load
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.body.classList.remove('is-preload');
+  }, 100);
+});
 
-	var	$window = $(window),
-		$body = $('body'),
-		$nav = $('#nav');
+// Smooth scroll for nav links and highlight active section
+const nav = document.getElementById('nav');
+if (nav) {
+  const navLinks = nav.querySelectorAll('a[href^="#"]');
+  const sections = Array.from(navLinks)
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
 
-	// Breakpoints.
-		breakpoints({
-			wide:      [ '961px',  '1880px' ],
-			normal:    [ '961px',  '1620px' ],
-			narrow:    [ '961px',  '1320px' ],
-			narrower:  [ '737px',  '960px'  ],
-			mobile:    [ null,     '736px'  ]
-		});
+  // Smooth scroll
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      const targetId = link.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
+        e.preventDefault();
+        const section = document.querySelector(targetId);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Remove active from all, add to clicked
+        navLinks.forEach(l => l.classList.remove('active', 'active-locked'));
+        link.classList.add('active', 'active-locked');
+      }
+    });
+  });
 
-	// Play initial animations on page load.
-		$window.on('load', function() {
-			window.setTimeout(function() {
-				$body.removeClass('is-preload');
-			}, 100);
-		});
+  // Highlight nav link on scroll
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 80;
+      if (window.scrollY >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  });
+}
 
-	// Nav.
-		var $nav_a = $nav.find('a');
+// Prepare for dark mode and scroll animations (to be added)
 
-		$nav_a
-			.addClass('scrolly')
-			.on('click', function(e) {
+// --- Dark Mode Toggle ---
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const darkModeIcon = document.getElementById('dark-mode-icon');
+const htmlEl = document.documentElement;
 
-				var $this = $(this);
+function setDarkMode(enabled) {
+  if (enabled) {
+    htmlEl.setAttribute('data-theme', 'dark');
+    if (darkModeIcon) darkModeIcon.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    htmlEl.removeAttribute('data-theme');
+    if (darkModeIcon) darkModeIcon.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  }
+}
 
-				// External link? Bail.
-					if ($this.attr('href').charAt(0) != '#')
-						return;
+if (darkModeToggle) {
+  darkModeToggle.addEventListener('click', () => {
+    const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+    setDarkMode(!isDark);
+  });
+}
 
-				// Prevent default.
-					e.preventDefault();
+// Restore theme on load
+(function restoreTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') setDarkMode(true);
+  else setDarkMode(false);
+})();
 
-				// Deactivate all links.
-					$nav_a.removeClass('active');
+// --- Scroll Reveal Animations ---
+const revealEls = document.querySelectorAll('section, .reveal-on-scroll');
+const revealClass = 'revealed';
+if ('IntersectionObserver' in window && revealEls.length) {
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add(revealClass);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => {
+    el.classList.add('reveal-on-scroll');
+    observer.observe(el);
+  });
+}
 
-				// Activate link *and* lock it (so Scrollex doesn't try to activate other links as we're scrolling to this one's section).
-					$this
-						.addClass('active')
-						.addClass('active-locked');
+// --- Scroll-to-Top Button ---
+const scrollBtn = document.createElement('button');
+scrollBtn.id = 'scroll-to-top';
+scrollBtn.setAttribute('aria-label', 'Scroll to top');
+scrollBtn.innerHTML = '⬆️';
+scrollBtn.style.display = 'none';
+document.body.appendChild(scrollBtn);
 
-			})
-			.each(function() {
-
-				var	$this = $(this),
-					id = $this.attr('href'),
-					$section = $(id);
-
-				// No section for this link? Bail.
-					if ($section.length < 1)
-						return;
-
-				// Scrollex.
-					$section.scrollex({
-						mode: 'middle',
-						top: '-10vh',
-						bottom: '-10vh',
-						initialize: function() {
-
-							// Deactivate section.
-								$section.addClass('inactive');
-
-						},
-						enter: function() {
-
-							// Activate section.
-								$section.removeClass('inactive');
-
-							// No locked links? Deactivate all links and activate this section's one.
-								if ($nav_a.filter('.active-locked').length == 0) {
-
-									$nav_a.removeClass('active');
-									$this.addClass('active');
-
-								}
-
-							// Otherwise, if this section's link is the one that's locked, unlock it.
-								else if ($this.hasClass('active-locked'))
-									$this.removeClass('active-locked');
-
-						}
-					});
-
-			});
-
-	// Scrolly.
-		$('.scrolly').scrolly();
-
-	// Header (narrower + mobile).
-
-		// Toggle.
-			$(
-				'<div id="headerToggle">' +
-					'<a href="#header" class="toggle"></a>' +
-				'</div>'
-			)
-				.appendTo($body);
-
-		// Header.
-			$('#header')
-				.panel({
-					delay: 500,
-					hideOnClick: true,
-					hideOnSwipe: true,
-					resetScroll: true,
-					resetForms: true,
-					side: 'left',
-					target: $body,
-					visibleClass: 'header-visible'
-				});
-
-})(jQuery);
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 300) {
+    scrollBtn.style.display = 'block';
+  } else {
+    scrollBtn.style.display = 'none';
+  }
+});
+scrollBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
